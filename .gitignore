@@ -3,3 +3,6 @@
 **/__pycache__
 
 *.DS_Store
+
+**/running-heart-rate-recovery/
+**/keys.py
