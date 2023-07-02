@@ -8,7 +8,7 @@ class ProcClassifier:
         self.mean, self.width, self.thresh = None, None, None
         
     def _proc_error(self, ref_curve, trace):
-        _, _, disparity = procrustes(ref_curve.reshape(1, -1), trace.reshape(1, -1))
+        _, _, disparity = procrustes(ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
         return disparity
 
     def fit(self, X, y=None, ci_width=3.0, threshold=None):
@@ -54,6 +54,6 @@ class ProcClassifier:
         
         # Compute procrustes error for each curve
         errors = np.array([self._proc_error(self.mean, x) for x in X])
-        preds = np.where(errors >= self.thresh, 1.0, 0.0)
+        preds = np.where(errors > self.thresh, 1.0, 0.0)
         
         return preds
