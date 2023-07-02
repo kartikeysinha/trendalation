@@ -1,0 +1,5 @@
+# Ignores all directories with patterns-
+**/venv
+**/__pycache__
+
+*.DS_Store
