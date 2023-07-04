@@ -3,9 +3,19 @@ from sklearn import metrics
 import scipy.interpolate as interp # Or use resampy
 from scipy.spatial import procrustes
 
+def proc_error(ref_curve, trace):
+    ref_curve, trace = [np.array(x) for x in (ref_curve, trace)]
+    _, _, disparity = procrustes(ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
+    return disparity
+
+def normalize_trace(trace, eps=1e-7):
+    mean = np.mean(trace)
+    std = np.std(trace) + eps # Add small value to prevent division by zero error
+    return (trace - mean) / std
+
 class ProcClassifier:
     def __init__(self) -> None:
-        self.mean, self.width, self.thresh = None, None, None
+        self.ref_curve, self.width, self.thresh = None, None, None
         
     def _proc_error(self, ref_curve, trace):
         _, _, disparity = procrustes(ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
@@ -38,10 +48,10 @@ class ProcClassifier:
         
         # Setup procrustes parameters
         self.width = ci_width
-        self.mean = np.mean(X_train, axis=0)
+        self.ref_curve = np.mean(X_train, axis=0)
         
         # Error threshold for classification
-        errors = np.array([self._proc_error(self.mean, x) for x in X])
+        errors = np.array([self._proc_error(self.ref_curve, x) for x in X])
         if threshold is not None:
             if threshold > 0 and threshold < 1:
                 self.thresh = np.percentile(errors, threshold)
@@ -62,7 +72,7 @@ class ProcClassifier:
             X = X.reshape(1, -1)
         
         # Compute procrustes error for each curve
-        errors = np.array([self._proc_error(self.mean, x) for x in X])
+        errors = np.array([self._proc_error(self.ref_curve, x) for x in X])
         preds = np.where(errors > self.thresh, 1.0, 0.0)
         
         return preds
