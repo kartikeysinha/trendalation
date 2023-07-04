@@ -10,26 +10,35 @@ class ProcClassifier:
     def _proc_error(self, ref_curve, trace):
         _, _, disparity = procrustes(ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
         return disparity
+    
+    def _normalize_trace(self, trace):
+        eps = 1e-7 # Add small value to prevent division by zero error
+        mean = np.mean(trace)
+        std = np.std(trace) + eps
+        return (trace - mean) / std
 
-    def fit(self, X, y=None, ci_width=3.0, threshold=None):
+    def fit(self, X, y=None, ci_width=3.0, threshold=None, normalize=True):
         '''
         Expects y to be a binary value array => y[i] == 1 or y[i] == 0
         (Assumes 1 is the label for anomalies)
         '''
         
         # Convert to 2d numpy array
-        X = np.array(X)
-        if X.ndim == 1:
-            X = X.reshape(1, -1)
+        X_train = np.array(X, copy=True)
+        if X_train.ndim == 1:
+            X_train = X.reshape(1, -1)
+            
+        # Normalize each trace with respect to itself
+        if normalize:
+            X_train = np.array([self._normalize_trace(x) for x in X_train])
         
         # Only train on good data points if labels are provided
-        X_train = X.copy() 
         if y is not None:
             X_train = X_train[y == 0]
         
         # Setup procrustes parameters
         self.width = ci_width
-        self.mean = np.mean(X, axis=0)
+        self.mean = np.mean(X_train, axis=0)
         
         # Error threshold for classification
         errors = np.array([self._proc_error(self.mean, x) for x in X])
