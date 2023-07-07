@@ -1,4 +1,8 @@
 # Ignores all directories with patterns-
+**/build
+**/dist
+**/trendalation.egg-info
+
 **/venv
 **/__pycache__
 
