@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='trendalation',
-    packages=['trendalation'],
-    version='0.0.1',
+    package_dir={"": "src"},
+    packages=find_packages(where="src"),
+    python_requires=">=3.8",
+    version='0.1.3',
     license='MIT',
     author="Raghav Saboo, Kartikey Sinha",
     author_email='raghs2000@gmail.com',
-    # packages=find_packages('src'),
-    # package_dir={'': 'src'},
     url='https://github.com/kartikeysinha/trendalation',
     keywords=['anomaly detection', 'procrustes', 'time-series', 'trends'],
     install_requires=[
