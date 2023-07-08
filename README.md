@@ -31,8 +31,3 @@ The issues will be reviewed by the authors on a regular basis & you're welcome t
 
 This project is a community effort, and everyone is welcome to contribute.
 Feel free to work on any open issues and setup PRs.
-
-## Citation
-
-If you use scikit-learn in a scientific publication, we would appreciate citations:
-```insert link for citation instructions```
