@@ -67,8 +67,8 @@ class ProcClassifier:
                 error : float 
                     Procrustes error for the trace against the reference curve.
         '''
-        if not self.is_fitted:
-            raise Exception("Error: Fit model before making predictions")
+        # if not self.is_fitted:
+        #     raise Exception("Error: Fit model before making predictions")
     
         _, _, disparity = procrustes(self.ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
         return disparity
@@ -143,7 +143,7 @@ class ProcClassifier:
         self.ref_curve = np.mean(X_train, axis=0)
         
         # Error threshold for classification
-        errors = np.array([self._proc_error(self.ref_curve, x) for x in X])
+        errors = np.array([self._proc_error(x) for x in X])
         if threshold is not None:
             if threshold > 0 and threshold < 1:
                 self.thresh = np.percentile(errors, threshold)
