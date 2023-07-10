@@ -11,7 +11,7 @@ class ProcClassifier:
         self.is_fitted = False
         
     def _proc_error(self, trace):
-        '''
+        """
         Returns the procrustes error against the fitted reference curve for a given trace.
 
                 Parameters
@@ -24,15 +24,12 @@ class ProcClassifier:
                 -------
                 error : float 
                     Procrustes error for the trace against the reference curve.
-        '''
-        # if not self.is_fitted:
-        #     raise Exception("Error: Fit model before making predictions")
-    
+        """    
         _, _, disparity = procrustes(self.ref_curve.reshape(-1, 1), trace.reshape(-1, 1))
         return disparity
     
     def _normalize_trace(self, trace):
-        '''
+        """
         Normalize a trace with respect to itself => (trace - mean(trace)) / std(trace)
 
                 Parameters
@@ -45,13 +42,13 @@ class ProcClassifier:
                 -------
                 trace : array-like of shape (n_sampn_featuresles,)
                     Normalized trace.
-        '''
+        """
         mean = np.mean(trace)
         std = np.std(trace)
         return (trace - mean) / std
 
     def fit(self, X, y=None, threshold=None, normalize=True, ci_width=3.0):
-        '''
+        """
         Build a Procrustes Analysis powered classifier from the training set (X, y).
 
                 Parameters
@@ -81,7 +78,7 @@ class ProcClassifier:
                 Returns
                 -------
                 None
-        '''
+        """
         
         # Convert to 2d numpy array
         X_train = np.array(X, dtype=np.float64, copy=True)
@@ -116,10 +113,27 @@ class ProcClassifier:
             self.thresh = np.percentile(errors, 0.75)
 
         # Mark estimator as fitted 
-        self.is_fitted = True
+        self.is_fitted = True        
+    
+    def _predict_preproc(self, X):
+        """
+        Preprocing for prediction.
+        """
+        if not self.is_fitted:
+            raise Exception("Error: Fit model before making predictions")
+        
+        # Convert to 2d numpy array
+        X = np.array(X, dtype=np.float64, copy=True)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        
+        # Compute procrustes error for each curve
+        errors = np.array([self._proc_error(x) for x in X])
 
+        return (errors - self.thresh).round(5)
+    
     def predict(self, X):
-        '''
+        """
         Classify traces based on the trained estimator (X).
 
                 Parameters
@@ -133,17 +147,26 @@ class ProcClassifier:
                 y : array-like of shape (n_samples,)
                     The predicted label values (binary class labels) as integers with 1 
                     representing an anomaly.
-        '''
-        if not self.is_fitted:
-            raise Exception("Error: Fit model before making predictions")
-        
-        # Convert to 2d numpy array
-        X = np.array(X, dtype=np.float64, copy=True)
-        if X.ndim == 1:
-            X = X.reshape(1, -1)
-        
-        # Compute procrustes error for each curve
-        errors = np.array([self._proc_error(x) for x in X])
-        preds = np.where(errors > self.thresh, 1.0, 0.0)
-        
+        """
+        errors_less_threshold = self._predict_preproc(X)
+        preds = np.where(errors_less_threshold > 0.0, 1.0, 0.0)
         return preds
+
+    def predict_score(self, X):
+        """
+        Score to quantify how well the traces adapt to the trained estimator (X).
+        Score represents error, so the lesser the better.
+
+                Parameters
+                ----------
+                X : {array-like, sparse matrix} of shape (n_samples, n_features)
+                    The training input samples. Internally, it will be converted to
+                    ``dtype=np.float32``.
+
+                Returns
+                -------
+                y : array-like of shape (n_samples,)
+                    The mean squared error of the transformed curve with thee reference curve.
+                    The lesser the value, the closer the curve is to the reference curve.
+        """
+        return self._predict_preproc(X)
