@@ -22,6 +22,12 @@ The easiest way to install trendalation is using pip:
 
 ## Documentation
 
+### Usage
+
+```from trendalation.metrics import proc_error, normalize_trace
+from trendalation.classification import ProcClassifier
+```
+
 ## Help and Support
 
 In order to report bugfixes and new feature requests, simply create a new issue on the repository.
