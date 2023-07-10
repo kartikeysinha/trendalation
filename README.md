@@ -24,7 +24,8 @@ The easiest way to install trendalation is using pip:
 
 ### Usage
 
-```from trendalation.metrics import proc_error, normalize_trace
+```
+from trendalation.metrics import proc_error, normalize_trace
 from trendalation.classification import ProcClassifier
 ```
 
