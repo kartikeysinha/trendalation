@@ -1,6 +1,6 @@
 # trendalation
 
-An anomaly detection package for all sorts of trends & time series data. The library leverages algorithms like procrustes analysis to compare and contrast the general shape & trajectory of different trends. Using the training dataset, an ideal reference trace is determined for comparision along with a classification threshold from the generated error distribution.
+An anomaly detection package for all sorts of trends & time series data. The library leverages algorithms like procrustes analysis to compare and contrast the general shape & trajectory of different trends. The **procrustses analysis** technique could be leveraged to get the minimum possible mean squared error between 2 distributions (after mathematical transformations). Using the training dataset, an ideal reference trace is determined for comparision along with a classification threshold from the generated error distribution using procrustes against this reference curve.
 
 ```insert images here```
 
