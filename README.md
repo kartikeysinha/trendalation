@@ -2,7 +2,8 @@
 
 An anomaly detection package for all sorts of trends & time series data. The library leverages algorithms like procrustes analysis to compare and contrast the general shape & trajectory of different trends. The **procrustses analysis** technique could be leveraged to get the minimum possible mean squared error between 2 distributions (after mathematical transformations). Using the training dataset, an ideal reference trace is determined for comparision along with a classification threshold from the generated error distribution using procrustes against this reference curve.
 
-<!-- ```insert images here``` -->
+<img width="718" alt="before_proc_demo" src="https://github.com/kartikeysinha/trendalation/assets/44055129/54e6dc93-33b8-4890-a086-5e624aff1dc3">
+<img width="718" alt="after_proc_demo" src="https://github.com/kartikeysinha/trendalation/assets/44055129/5802bb69-9695-4403-9d9e-1f8c02f59ce3">
 
 ## Installation
 
