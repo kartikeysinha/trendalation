@@ -36,7 +36,7 @@ def normalize_trace(trace):
 
             Returns
             -------
-            trace : array-like of shape (n_sampn_featuresles,)
+            trace : array-like of shape (n_samples, n_features)
                 Normalized trace.
     '''
     mean = np.mean(trace)
