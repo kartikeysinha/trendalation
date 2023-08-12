@@ -9,7 +9,7 @@ setup(
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     python_requires=">=3.8",
-    version='1.0.1',
+    version='1.0.2',
     license='MIT',
     author=['Raghav Saboo', 'Kartikey Sinha'],
     author_email='raghs2000@gmail.com',
