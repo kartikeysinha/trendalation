@@ -5,6 +5,16 @@ An anomaly detection package for all sorts of trends & time series data. The lib
 <img width="718" alt="before_proc_demo" src="https://github.com/kartikeysinha/trendalation/assets/44055129/54e6dc93-33b8-4890-a086-5e624aff1dc3">
 <img width="718" alt="after_proc_demo" src="https://github.com/kartikeysinha/trendalation/assets/44055129/5802bb69-9695-4403-9d9e-1f8c02f59ce3">
 
+## Why Trendalation?
+
+In the realm of data analysis and business intelligence, identifying anomalies within time-series data is paramount. Whether it's monitoring website traffic, financial metrics, or industrial sensor readings, uncovering unusual patterns can be the key to proactive decision-making. Trendalation empowers you to effortlessly build robust anomaly detection models that adapt to your data's nuances.
+
+### Key Features
+
+- **Highly Customizable:** Fine-tune models using several parameters to optimize for your project constraints.
+- **Lightweight Solution:** Unlike other solutions, Trendalation provides an extremely lightweight & fast solution, best suited for projects where performance is paramount.
+- **Versatile Algorithms:** Spatial analysis makes the algorithms extremely effective for all sorts of trends.
+
 ## Installation
 
 ### Dependencies
